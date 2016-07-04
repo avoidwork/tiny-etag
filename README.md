@@ -1,6 +1,6 @@
 # tiny-etag
 
-[![build status](https://secure.travis-ci.org/avoidwork/tiny-parse.svg)](http://travis-ci.org/avoidwork/tiny-parse)
+[![build status](https://secure.travis-ci.org/avoidwork/tiny-etag.svg)](http://travis-ci.org/avoidwork/tiny-etag)
 
 ETag middleware
 
