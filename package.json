@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
