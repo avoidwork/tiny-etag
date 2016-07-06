@@ -42,7 +42,10 @@ Creates a hash of `arg`, used by `create()`
 Middleware to be used by an http framework
 
 ##### register (url, state)
-Registers a state in the cache
+Adds `url` to the `cache`
+
+##### unregister (url)
+Removes `url` from the `cache`
 
 ## License
 Copyright (c) 2016 Jason Mulligan
