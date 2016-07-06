@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>tiny-etag by avoidwork</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">tiny-etag</h1>
+      <h2 class="project-tagline">ETag middleware</h2>
+      <a href="https://github.com/avoidwork/tiny-etag" class="btn">View on GitHub</a>
+      <a href="https://github.com/avoidwork/tiny-etag/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/avoidwork/tiny-etag/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="tiny-etag" class="anchor" href="#tiny-etag" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tiny-etag</h1>
+
+<p><a href="http://travis-ci.org/avoidwork/tiny-etag"><img src="https://secure.travis-ci.org/avoidwork/tiny-etag.svg" alt="build status"></a></p>
+
+<p>ETag middleware</p>
+
+<h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">"</span>use strict<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">const</span> <span class="pl-c1">http</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>http<span class="pl-pds">"</span></span>),
+    max <span class="pl-k">=</span> <span class="pl-c1">1000</span>,
+    seed <span class="pl-k">=</span> <span class="pl-c1">Math</span>.<span class="pl-c1">floor</span>(<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">*</span> max) <span class="pl-k">+</span> <span class="pl-c1">1</span>;
+
+<span class="pl-k">let</span> router <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>woodland<span class="pl-pds">"</span></span>)({cacheSize<span class="pl-k">:</span> max, defaultHeaders<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">"</span>Cache-Control<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>no-cache<span class="pl-pds">"</span></span>}, seed<span class="pl-k">:</span> seed}),
+    etag <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>tiny-etag<span class="pl-pds">"</span></span>)({cacheSize<span class="pl-k">:</span> max, seed<span class="pl-k">:</span> seed});
+
+<span class="pl-smi">router</span>.<span class="pl-en">use</span>(<span class="pl-smi">etag</span>.<span class="pl-smi">middleware</span>).<span class="pl-en">blacklist</span>(<span class="pl-smi">etag</span>.<span class="pl-smi">middleware</span>);
+
+<span class="pl-smi">router</span>.<span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">"</span>/<span class="pl-pds">"</span></span>, (<span class="pl-smi">req</span>, <span class="pl-smi">res</span>) <span class="pl-k">=&gt;</span> {
+    <span class="pl-k">const</span> <span class="pl-c1">body</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>;
+
+    <span class="pl-smi">res</span>.<span class="pl-en">writeHead</span>(<span class="pl-c1">200</span>, {<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>ETag<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-smi">etag</span>.<span class="pl-en">create</span>(body)});
+    <span class="pl-smi">res</span>.<span class="pl-en">end</span>(body);
+});
+
+<span class="pl-smi">http</span>.<span class="pl-en">createServer</span>(<span class="pl-smi">router</span>.<span class="pl-smi">route</span>).<span class="pl-en">listen</span>(<span class="pl-c1">8000</span>);</pre></div>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h2>
+
+<h5>
+<a id="etag-cachesize-1000-seed-random" class="anchor" href="#etag-cachesize-1000-seed-random" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>etag ({cacheSize: 1000, seed: random})</h5>
+
+<p>Returns an tiny-etag instance</p>
+
+<h5>
+<a id="create-arg" class="anchor" href="#create-arg" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>create (arg)</h5>
+
+<p>Creates a strong ETag value from <code>arg</code></p>
+
+<h5>
+<a id="hash-arg" class="anchor" href="#hash-arg" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hash (arg)</h5>
+
+<p>Creates a hash of <code>arg</code>, used by <code>create()</code></p>
+
+<h5>
+<a id="middleware-req-res-next" class="anchor" href="#middleware-req-res-next" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>middleware (req, res, next)</h5>
+
+<p>Middleware to be used by an http framework</p>
+
+<h5>
+<a id="register-url-state" class="anchor" href="#register-url-state" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>register (url, state)</h5>
+
+<p>Adds <code>url</code> to the <code>cache</code></p>
+
+<h5>
+<a id="unregister-url" class="anchor" href="#unregister-url" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>unregister (url)</h5>
+
+<p>Removes <code>url</code> from the <code>cache</code></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (c) 2016 Jason Mulligan
+Licensed under the BSD-3 license</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/avoidwork/tiny-etag">tiny-etag</a> is maintained by <a href="https://github.com/avoidwork">avoidwork</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
