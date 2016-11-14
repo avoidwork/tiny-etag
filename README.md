@@ -41,6 +41,9 @@ Creates a hash of `arg`, used by `create()`
 ##### middleware (req, res, next)
 Middleware to be used by an http framework
 
+##### onchange (arg)
+Recieves a dump of the cache for propagation, override to customize behavior
+
 ##### register (url, state)
 Adds `url` to the `cache`
 
