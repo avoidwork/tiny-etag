@@ -47,6 +47,9 @@ Adds `url` to the `cache`
 ##### unregister (url)
 Removes `url` from the `cache`
 
+#### update (arg)
+Updates the cache state with `arg`, which should be the output of `this.cache.dump()` from another cache instance
+
 ## License
 Copyright (c) 2016 Jason Mulligan
 Licensed under the BSD-3 license
