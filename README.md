@@ -10,9 +10,8 @@ ETag middleware
 
 const http = require("http"),
 	max = 1000,
-	seed = Math.floor(Math.random() * max) + 1;
-
-let router = require("woodland")({cacheSize: max, defaultHeaders: {"Cache-Control": "no-cache"}, seed: seed}),
+	seed = Math.floor(Math.random() * max) + 1,
+	router = require("woodland")({cacheSize: max, defaultHeaders: {"Cache-Control": "no-cache"}, seed: seed}),
 	etag = require("tiny-etag")({cacheSize: max, seed: seed});
 
 router.use(etag.middleware).blacklist(etag.middleware);
@@ -29,8 +28,8 @@ http.createServer(router.route).listen(8000);
 
 ## API
 
-##### etag ({cacheSize: 1000, seed: random})
-Returns an tiny-etag instance
+##### etag ({cacheSize: 1000, seed: random, notify: false, onchange = (eventName, serializedCache) => {}})
+Returns an tiny-etag instance. Be notified of cache changes by setting `notify` to `true`, and supply `onchange`.
 
 ##### create (arg)
 Creates a strong ETag value from `arg`

@@ -5,9 +5,8 @@ const http = require("http"),
 	random = Math.floor(Math.random()*9)+1,
 	mmh3 = require("murmurhash3js").x86.hash32,
 	etagValue = "\"" + mmh3("Hello World!", random) + "\"",
-	cacheSize = 1000;
-
-let router = require("woodland")({defaultHeaders: {"Cache-Control": "no-cache"}, cacheSize: cacheSize, defaultHost: "localhost", hosts: ["localhost", "noresponse"]}),
+	cacheSize = 1000,
+	router = require("woodland")({defaultHeaders: {"Cache-Control": "no-cache"}, cacheSize: cacheSize, defaultHost: "localhost", hosts: ["localhost", "noresponse"]}),
 	hippie = require("hippie"),
 	etag = require(path.join(__dirname, "..", "index.js"))({cacheSize: cacheSize, seed: random});
 
