@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
@@ -22,12 +22,14 @@
   "bugs": {
     "url": "https://github.com/avoidwork/tiny-etag/issues"
   },
+  "engineStrict": true,
   "engines": {
     "node": ">=6.0.0"
   },
   "homepage": "http://avoidwork.github.io/tiny-etag/",
   "dependencies": {
     "murmurhash3js": "~3.0.1",
+    "retsu": "~2.0.3",
     "tiny-lru": "~1.4.1",
     "tiny-parse": "~1.0.3"
   },
