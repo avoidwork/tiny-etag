@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
   "dependencies": {
     "murmurhash3js": "~3.0.1",
     "retsu": "~2.0.3",
-    "tiny-lru": "~1.4.1",
+    "tiny-lru": "~1.4.2",
     "tiny-parse": "~1.0.3"
   },
   "devDependencies": {
@@ -40,6 +40,6 @@
     "grunt-nsp": "~2.2.0",
     "hippie": "~0.5.0",
     "mocha": "~2.5.3",
-    "woodland": "~1.1.15"
+    "woodland": "~1.1.17"
   }
 }
