@@ -6,7 +6,7 @@ const http = require("http"),
 	mmh3 = require("murmurhash3js").x86.hash32,
 	etagValue = "\"" + mmh3("Hello World!", random) + "\"",
 	cacheSize = 1000,
-	router = require("woodland")({defaultHeaders: {"Cache-Control": "no-cache"}, cacheSize: cacheSize, defaultHost: "localhost", hosts: ["localhost", "noresponse"]}),
+	router = require("woodland")({defaultHeaders: {"Cache-Control": "public"}, cacheSize: cacheSize, defaultHost: "localhost", hosts: ["localhost", "noresponse"]}),
 	hippie = require("hippie"),
 	etag = require(path.join(__dirname, "..", "index.js"))({cacheSize: cacheSize, seed: random});
 
@@ -21,6 +21,11 @@ router.use("/", function hello (req, res) {
 	res.end("Hello World!");
 });
 
+router.use("/no-cache", function hello (req, res) {
+  res.writeHead(200, {"Content-Type": "text/plain", "Cache-Control":"no-cache"});
+  res.end("Hello World!");
+});
+
 http.createServer(router.route).listen(8001);
 
 describe("Valid ETag", function () {
@@ -29,7 +34,7 @@ describe("Valid ETag", function () {
 			.get("/")
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
-			.expectHeader("Cache-Control", "no-cache")
+			.expectHeader("Cache-Control", "public")
 			.expectHeader("Content-Type", "text/plain")
 			.expectHeader("ETag", etagValue)
 			.expectBody(/^Hello World!$/)
@@ -44,7 +49,7 @@ describe("Valid ETag", function () {
 			.head("/")
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
-			.expectHeader("Cache-Control", "no-cache")
+			.expectHeader("Cache-Control", "public")
 			.expectHeader("Content-Type", "text/plain")
 			.expectHeader("ETag", etagValue)
 			.expectBody(/^$/)
@@ -77,6 +82,36 @@ describe("Valid ETag", function () {
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", undefined)
 			.expectHeader("ETag", etagValue)
+			.expectBody(/^$/)
+			.end(function (err) {
+				if (err) throw err;
+				done();
+			});
+	});
+
+	it("GET /no-cache (200 / 'Success' / No Etag)", function (done) {
+		request()
+			.get("/no-cache")
+			.expectStatus(200)
+			.expectHeader("Allow", "GET, HEAD, OPTIONS")
+			.expectHeader("Cache-Control", "no-cache")
+			.expectHeader("Content-Type", "text/plain")
+			.expectHeader("ETag", undefined)
+			.expectBody(/^Hello World!$/)
+			.end(function (err) {
+				if (err) throw err;
+				done();
+			});
+	});
+
+	it("HEAD /no-cache (200 / 'Success' / No Etag)", function (done) {
+		request()
+			.head("/no-cache")
+			.expectStatus(200)
+			.expectHeader("Allow", "GET, HEAD, OPTIONS")
+			.expectHeader("Cache-Control", "no-cache")
+			.expectHeader("Content-Type", "text/plain")
+			.expectHeader("ETag", undefined)
 			.expectBody(/^$/)
 			.end(function (err) {
 				if (err) throw err;

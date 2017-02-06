@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
@@ -31,15 +31,15 @@
     "murmurhash3js": "~3.0.1",
     "retsu": "~2.0.3",
     "tiny-lru": "~1.4.2",
-    "tiny-parse": "~1.0.3"
+    "tiny-parse": "~2.0.0"
   },
   "devDependencies": {
     "grunt": "~1.0.1",
-    "grunt-eslint": "~18.1.0",
+    "grunt-eslint": "~19.0.0",
     "grunt-mocha-test": "~0.12.7",
     "grunt-nsp": "~2.2.0",
     "hippie": "~0.5.0",
     "mocha": "~2.5.3",
-    "woodland": "~1.1.17"
+    "woodland": "~1.1.18"
   }
 }
