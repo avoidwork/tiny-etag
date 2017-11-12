@@ -6,7 +6,7 @@ const http = require("http"),
 	mmh3 = require("murmurhash3js").x86.hash32,
 	etagValue = "\"" + mmh3("Hello World!", random) + "\"",
 	cacheSize = 1000,
-	router = require("woodland")({defaultHeaders: {"Cache-Control": "public"}, cacheSize: cacheSize, defaultHost: "localhost", hosts: ["localhost", "noresponse"]}),
+	router = require("woodland")({defaultHeaders: {"Cache-Control": "public"}, cacheSize: cacheSize}),
 	tinyhttptest = require("tiny-httptest"),
 	etag = require(path.join(__dirname, "..", "index.js"))({cacheSize: cacheSize, seed: random});
 
