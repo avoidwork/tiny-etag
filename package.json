@@ -30,7 +30,7 @@
   "dependencies": {
     "murmurhash3js": "^3.0.1",
     "retsu": "^2.0.3",
-    "tiny-lru": "^1.4.11",
+    "tiny-lru": "^1.4.13",
     "tiny-parse": "^2.1.1"
   },
   "devDependencies": {
