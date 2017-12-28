@@ -28,8 +28,8 @@ http.createServer(router.route).listen(8000);
 
 ## API
 
-##### etag ({cacheSize: 1000, seed: random, notify: false, onchange = (eventName, serializedCache) => {}})
-Returns an tiny-etag instance. Be notified of cache changes by setting `notify` to `true`, and supply `onchange`.
+##### etag ({cacheSize: 1000, cacheTTL: 0, seed: random, notify: false, onchange = (eventName, serializedCache) => {}})
+Returns an tiny-etag instance. Be notified of cache changes by setting `notify` to `true`, and supply `onchange`. Cache TTL concerns do not spread with a notification.
 
 ##### create (arg)
 Creates a strong ETag value from `arg`
