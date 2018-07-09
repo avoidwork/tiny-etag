@@ -6,7 +6,7 @@ const path = require("path"),
 function factory (config) {
 	const obj = new ETag(config);
 
-	obj.middleware = (req, res, next) => obj.etag.call(obj, req, res, next);
+	obj.middleware = obj.middleware.bind(obj);
 
 	return obj;
 }

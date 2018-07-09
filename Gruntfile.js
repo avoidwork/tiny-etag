@@ -19,9 +19,8 @@ module.exports = function (grunt) {
 	// tasks
 	grunt.loadNpmTasks("grunt-eslint");
 	grunt.loadNpmTasks("grunt-mocha-test");
-	grunt.loadNpmTasks("grunt-nsp");
 
 	// aliases
-	grunt.registerTask("test", ["eslint", "mochaTest", "nsp"]);
+	grunt.registerTask("test", ["eslint", "mochaTest"]);
 	grunt.registerTask("default", ["test"]);
 };
