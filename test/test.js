@@ -6,21 +6,14 @@ const http = require("http"),
 	mmh3 = require("murmurhash3js").x86.hash32,
 	etagValue = "\"" + mmh3("Hello World!", random) + "\"",
 	cacheSize = 1000,
-	router = require("woodland")({defaultHeaders: {"Cache-Control": "public"}, cacheSize: cacheSize}),
+	router = require("woodland")({defaultHeaders: {"Content-Type": "text/plain", "Cache-Control": "public"}, cacheSize: cacheSize}),
 	tinyhttptest = require("tiny-httptest"),
-	etag = require(path.join(__dirname, "..", "index.js"))({cacheSize: cacheSize, seed: random});
+	etag = require(path.join(__dirname, "..", "index.js"))({cacheSize: cacheSize, seed: random}),
+	msg = "Hello World!";
 
-router.use(etag.middleware, "all").blacklist(etag.middleware);
-
-router.use("/", function hello (req, res) {
-	res.writeHead(200, {"Content-Type": "text/plain", "ETag": etag.create("Hello World!")});
-	res.end("Hello World!");
-});
-
-router.use("/no-cache", function hello (req, res) {
-	res.writeHead(200, {"Content-Type": "text/plain", "Cache-Control": "no-cache"});
-	res.end("Hello World!");
-});
+router.always(etag.middleware).blacklist(etag.middleware);
+router.get("/", (req, res) => res.send(msg, 200, {"ETag": etag.create(msg)}));
+router.get("/no-cache", (req, res) => res.send(msg, 200, {"Cache-Control": "no-cache"}));
 
 http.createServer(router.route).listen(8001);
 

@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.5.0",
+  "version": "1.4.8",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
@@ -24,21 +24,19 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.4.0"
   },
   "homepage": "http://avoidwork.github.io/tiny-etag/",
   "dependencies": {
     "murmurhash3js": "^3.0.1",
-    "retsu": "^3.0.2",
-    "tiny-lru": "^1.6.1",
-    "tiny-parse": "^2.1.3"
+    "tiny-lru": "^1.6.1"
   },
   "devDependencies": {
     "grunt": "^1.0.3",
     "grunt-eslint": "^21.0.0",
     "grunt-mocha-test": "^0.13.3",
     "mocha": "^5.2.0",
-    "tiny-httptest": "^1.0.20",
-    "woodland": "^7.1.8"
+    "tiny-httptest": "^1.0.21",
+    "woodland": "^7.1.12"
   }
 }
