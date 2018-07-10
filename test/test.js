@@ -2,7 +2,7 @@
 
 const http = require("http"),
 	path = require("path"),
-	random = Math.floor(Math.random()*9)+1,
+	random = Math.floor(Math.random() * 9) + 1,
 	mmh3 = require("murmurhash3js").x86.hash32,
 	etagValue = "\"" + mmh3("Hello World!", random) + "\"",
 	cacheSize = 1000,
@@ -18,8 +18,8 @@ router.use("/", function hello (req, res) {
 });
 
 router.use("/no-cache", function hello (req, res) {
-  res.writeHead(200, {"Content-Type": "text/plain", "Cache-Control":"no-cache"});
-  res.end("Hello World!");
+	res.writeHead(200, {"Content-Type": "text/plain", "Cache-Control": "no-cache"});
+	res.end("Hello World!");
 });
 
 http.createServer(router.route).listen(8001);
@@ -48,7 +48,7 @@ describe("Valid ETag", function () {
 	});
 
 	it("GET / (304 / empty)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers:{"If-None-Match": etagValue}})
+		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagValue}})
 			.expectStatus(304)
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", undefined)
@@ -58,7 +58,7 @@ describe("Valid ETag", function () {
 	});
 
 	it("GET / (304 / empty & validation)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers:{"If-None-Match": etagValue}})
+		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagValue}})
 			.expectStatus(304)
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", undefined)
