@@ -37,6 +37,6 @@
     "grunt-mocha-test": "^0.13.3",
     "mocha": "^5.2.0",
     "tiny-httptest": "^1.0.22",
-    "woodland": "^7.1.12"
+    "woodland": "^7.2.3"
   }
 }
