@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "homepage": "http://avoidwork.github.io/tiny-etag/",
   "dependencies": {
     "murmurhash3js": "^3.0.1",
-    "tiny-lru": "^1.6.4"
+    "tiny-lru": "^2.0.0"
   },
   "devDependencies": {
     "grunt": "^1.0.3",
