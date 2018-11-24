@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,6 @@
     "grunt-mocha-test": "^0.13.3",
     "mocha": "^5.2.0",
     "tiny-httptest": "^1.0.22",
-    "woodland": "^7.3.6"
+    "woodland": "^7.3.7"
   }
 }
