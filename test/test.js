@@ -40,7 +40,7 @@ describe("Valid ETag", function () {
 			.end();
 	});
 
-	it("GET / (200 / 'Success' - JSON)", function () {
+	it("GET / (200 / 'Success' / JSON)", function () {
 		return tinyhttptest({url: "http://localhost:8001/", headers: {accept: "application/json"}})
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
@@ -68,6 +68,17 @@ describe("Valid ETag", function () {
 			.expectHeader("Content-Length", void 0)
 			.expectHeader("ETag", etagValue)
 			.expectBody(/^$/)
+			.end();
+	});
+
+	it("GET / (200 / 'Success' / No Etag)", function () {
+		return tinyhttptest({url: "http://localhost:8001/"})
+			.expectStatus(200)
+			.expectHeader("Allow", "GET, HEAD, OPTIONS")
+			.expectHeader("Cache-Control", "public")
+			.expectHeader("Content-Type", "text/plain")
+			.expectHeader("ETag", etagValue)
+			.expectBody(/^Hello World!$/)
 			.end();
 	});
 
