@@ -47,5 +47,5 @@ Adds `url` to the `cache`
 Removes `url` from the `cache`
 
 ## License
-Copyright (c) 2018 Jason Mulligan
+Copyright (c) 2019 Jason Mulligan
 Licensed under the BSD-3 license
