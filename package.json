@@ -4,6 +4,7 @@
   "description": "ETag middleware",
   "main": "index.js",
   "scripts": {
+    "changelog": "auto-changelog -p",
     "test": "grunt test"
   },
   "repository": {
@@ -32,6 +33,7 @@
     "tiny-fifo": "^1.2.0"
   },
   "devDependencies": {
+    "auto-changelog": "^1.16.2",
     "grunt": "^1.0.4",
     "grunt-eslint": "^22.0.0",
     "grunt-mocha-test": "^0.13.3",
