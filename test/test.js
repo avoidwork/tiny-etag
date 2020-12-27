@@ -11,11 +11,11 @@ const http = require("http"),
 	msg = "Hello World!",
 	etagValue = `"${mmh3(msg, random)}"`;
 
-router.always(etag.middleware).blacklist(etag.middleware);
+router.get(etag.middleware).blacklist(etag.middleware);
 router.get("/", (req, res) => res.send(msg, 200, {"ETag": etag.create(msg)}));
 router.get("/no-cache", (req, res) => res.send(msg, 200, {"Cache-Control": "no-cache"}));
 
-http.createServer(router.route).listen(8001);
+const server = http.createServer(router.route).listen(8001);
 
 describe("Valid ETag", function () {
 	it("GET / (200 / 'Success')", function () {
@@ -101,6 +101,6 @@ describe("Valid ETag", function () {
 			.expectHeader("Content-Type", "text/plain")
 			.expectHeader("ETag", void 0)
 			.expectBody(/^$/)
-			.end();
+			.end().then(() => server.close());
 	});
 });
