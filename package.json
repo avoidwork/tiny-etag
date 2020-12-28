@@ -37,6 +37,6 @@
     "eslint": "^7.16.0",
     "mocha": "^8.2.1",
     "tiny-httptest": "^1.1.1",
-    "woodland": "^11.1.1"
+    "woodland": "^12.2.1"
   }
 }
