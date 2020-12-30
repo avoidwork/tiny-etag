@@ -57,6 +57,7 @@ describe("Valid ETag", function () {
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", void 0)
 			.expectHeader("ETag", etagValue)
+			.expectHeader("Cache-Control", void 0)
 			.expectBody(/^$/)
 			.end();
 	});
@@ -67,6 +68,7 @@ describe("Valid ETag", function () {
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", void 0)
 			.expectHeader("ETag", etagValue)
+			.expectHeader("Cache-Control", void 0)
 			.expectBody(/^$/)
 			.end();
 	});
