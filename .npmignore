@@ -1,8 +1,6 @@
-/.idea/
-/node_modules/
-/test/
+.idea
+src
+test
 .eslintrc
-.git
 .gitignore
-.travis.yml
-Gruntfile.js
+rollup.config.js

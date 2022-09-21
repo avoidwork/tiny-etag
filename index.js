@@ -1,5 +1,3 @@
-"use strict";
-
 const path = require("path"),
 	ETag = require(path.join(__dirname, "lib", "etag.js"));
 

@@ -1,11 +1,21 @@
 {
   "name": "tiny-etag",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "ETag middleware",
   "main": "index.js",
+  "files": [
+    "dist",
+    "*.d.ts"
+  ],
   "scripts": {
+    "build": "npm run lint && rm -rf dist/* && npm run rollup && npm run types && npm run mocha",
+    "benchmark": "node benchmark.js",
     "changelog": "auto-changelog -p",
-    "test": "eslint *.js lib/*.js test/*.js && mocha test/*.js"
+    "lint": "eslint *.js src/*.js test/*.js",
+    "mocha": "mocha test/*.js",
+    "rollup": "rollup --config",
+    "test": "npm run lint && npm run mocha",
+    "types": "npx -p typescript tsc src/*.js --declaration --allowJs --emitDeclarationOnly --outDir ."
   },
   "repository": {
     "type": "git",
@@ -30,13 +40,13 @@
   "homepage": "http://avoidwork.github.io/tiny-etag/",
   "dependencies": {
     "murmurhash3js": "^3.0.1",
-    "tiny-lru": "^7.0.6"
+    "tiny-lru": "^9.0.1"
   },
   "devDependencies": {
-    "auto-changelog": "^2.2.1",
-    "eslint": "^7.16.0",
-    "mocha": "^8.2.1",
-    "tiny-httptest": "^1.1.1",
-    "woodland": "^12.2.1"
+    "auto-changelog": "^2.4.0",
+    "eslint": "^8.23.1",
+    "mocha": "^10.0.0",
+    "tiny-httptest": "^2.0.0",
+    "woodland": "^16.1.3"
   }
 }
