@@ -1,30 +1,33 @@
-"use strict";
+import {createServer} from "node:http";
+import path from "node:path";
+import {createRequire} from "module";
+import woodland from "woodland";
 
-const http = require("http"),
-	path = require("path"),
+const require = createRequire(import.meta.url),
+	__dirname = require.resolve.paths(".")[0],
 	random = Math.floor(Math.random() * 9) + 1,
 	mmh3 = require("murmurhash3js").x86.hash32,
 	cacheSize = 1000,
-	router = require("woodland")({defaultHeaders: {"Content-Type": "text/plain", "Cache-Control": "public"}, cacheSize: cacheSize}),
+	router = woodland({defaultHeaders: {"Content-Type": "text/plain", "Cache-Control": "public"}, cacheSize: cacheSize}),
 	tinyhttptest = require("tiny-httptest"),
-	etag = require(path.join(__dirname, "..", "index.js"))({cacheSize: cacheSize, seed: random}),
+	etagStore = require(path.join(__dirname, "..", "src", "etag.js"))({cacheSize: cacheSize, seed: random}),
 	msg = "Hello World!",
-	etagValue = `"${mmh3(msg, random)}"`;
+	etagStoreValue = `"${mmh3(msg, random)}"`;
 
-router.get(etag.middleware).blacklist(etag.middleware);
-router.get("/", (req, res) => res.send(msg, 200, {"ETag": etag.create(msg)}));
+router.get(etagStore.middleware).blacklist(etagStore.middleware);
+router.get("/", (req, res) => res.send(msg, 200, {"etagStore": etagStore.create(msg)}));
 router.get("/no-cache", (req, res) => res.send(msg, 200, {"Cache-Control": "no-cache"}));
 
-const server = http.createServer(router.route).listen(8001);
+const server = createServer(router.route).listen(8001);
 
-describe("Valid ETag", function () {
+describe("Valid etagStore", function () {
 	it("GET / (200 / 'Success')", function () {
 		return tinyhttptest({url: "http://localhost:8001/"})
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
 			.expectHeader("Cache-Control", "public")
 			.expectHeader("Content-Type", "text/plain")
-			.expectHeader("ETag", etagValue)
+			.expectHeader("etagStore", etagStoreValue)
 			.expectBody(/^Hello World!$/)
 			.end();
 	});
@@ -35,7 +38,7 @@ describe("Valid ETag", function () {
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
 			.expectHeader("Cache-Control", "public")
 			.expectHeader("Content-Type", "text/plain")
-			.expectHeader("ETag", etagValue)
+			.expectHeader("etagStore", etagStoreValue)
 			.expectBody(/^$/)
 			.end();
 	});
@@ -46,62 +49,62 @@ describe("Valid ETag", function () {
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
 			.expectHeader("Cache-Control", "public")
 			.expectHeader("Content-Type", "text/plain")
-			.expectHeader("ETag", etagValue)
+			.expectHeader("etagStore", etagStoreValue)
 			.expectBody(/^Hello World!$/)
 			.end();
 	});
 
 	it("GET / (304 / empty)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagValue}})
+		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagStoreValue}})
 			.expectStatus(304)
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", void 0)
-			.expectHeader("ETag", etagValue)
+			.expectHeader("etagStore", etagStoreValue)
 			.expectHeader("Cache-Control", void 0)
 			.expectBody(/^$/)
 			.end();
 	});
 
 	it("GET / (304 / empty & validation)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagValue}})
+		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagStoreValue}})
 			.expectStatus(304)
 			.expectHeader("Age", /\d+/)
 			.expectHeader("Content-Length", void 0)
-			.expectHeader("ETag", etagValue)
+			.expectHeader("etagStore", etagStoreValue)
 			.expectHeader("Cache-Control", void 0)
 			.expectBody(/^$/)
 			.end();
 	});
 
-	it("GET / (200 / 'Success' / No Etag)", function () {
+	it("GET / (200 / 'Success' / No etagStore)", function () {
 		return tinyhttptest({url: "http://localhost:8001/"})
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
 			.expectHeader("Cache-Control", "public")
 			.expectHeader("Content-Type", "text/plain")
-			.expectHeader("ETag", etagValue)
+			.expectHeader("etagStore", etagStoreValue)
 			.expectBody(/^Hello World!$/)
 			.end();
 	});
 
-	it("GET /no-cache (200 / 'Success' / No Etag)", function () {
+	it("GET /no-cache (200 / 'Success' / No etagStore)", function () {
 		return tinyhttptest({url: "http://localhost:8001/no-cache"})
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
 			.expectHeader("Cache-Control", "no-cache")
 			.expectHeader("Content-Type", "text/plain")
-			.expectHeader("ETag", void 0)
+			.expectHeader("etagStore", void 0)
 			.expectBody(/^Hello World!$/)
 			.end();
 	});
 
-	it("HEAD /no-cache (200 / 'Success' / No Etag)", function () {
+	it("HEAD /no-cache (200 / 'Success' / No etagStore)", function () {
 		return tinyhttptest({url: "http://localhost:8001/no-cache", method: "head"})
 			.expectStatus(200)
 			.expectHeader("Allow", "GET, HEAD, OPTIONS")
 			.expectHeader("Cache-Control", "no-cache")
 			.expectHeader("Content-Type", "text/plain")
-			.expectHeader("ETag", void 0)
+			.expectHeader("etagStore", void 0)
 			.expectBody(/^$/)
 			.end().then(() => server.close());
 	});

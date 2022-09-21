@@ -52,7 +52,11 @@
     "auto-changelog": "^2.4.0",
     "eslint": "^8.23.1",
     "mocha": "^10.0.0",
+    "precise": "^2.0.0",
+    "rollup": "^2.79.0",
+    "rollup-plugin-terser": "^7.0.2",
     "tiny-httptest": "^2.0.0",
+    "typescript": "^4.8.3",
     "woodland": "^16.1.3"
   }
 }

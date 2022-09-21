@@ -1,7 +1,11 @@
-import {URL} from "node:util";
-import {lru} from "tiny-lru";
-import MurmurHash3 from "murmurhash3js";
-const mmh3 = MurmurHash3.x64.hash128;
+/**
+ * tiny-etag
+ *
+ * @copyright 2022 Jason Mulligan <jason.mulligan@avoidwork.com>
+ * @license BSD-3-Clause
+ * @version 3.0.0
+ */
+import {URL}from'node:util';import {lru}from'tiny-lru';import MurmurHash3 from'murmurhash3js';const mmh3 = MurmurHash3.x64.hash128;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));
@@ -88,10 +92,10 @@ class ETag {
 	}
 }
 
-export function etag ({cacheSize = 1e3, cacheTTL = 0, seed = null, mimetype = "text/plain"} = {}) {
+function etag ({cacheSize = 1e3, cacheTTL = 0, seed = null, mimetype = "text/plain"} = {}) {
 	const obj = new ETag(cacheSize, cacheTTL, seed !== null ? seed : Math.floor(Math.random() * cacheSize) + 1, mimetype);
 
 	obj.middleware = obj.middleware.bind(obj);
 
 	return obj;
-}
+}export{etag};

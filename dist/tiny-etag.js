@@ -1,7 +1,11 @@
-import {URL} from "node:util";
-import {lru} from "tiny-lru";
-import MurmurHash3 from "murmurhash3js";
-const mmh3 = MurmurHash3.x64.hash128;
+/**
+ * tiny-etag
+ *
+ * @copyright 2022 Jason Mulligan <jason.mulligan@avoidwork.com>
+ * @license BSD-3-Clause
+ * @version 3.0.0
+ */
+(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(exports,require('node:util'),require('tiny-lru'),require('murmurhash3js')):typeof define==='function'&&define.amd?define(['exports','node:util','tiny-lru','murmurhash3js'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.etag={},g.node_util,g.tinyLru,g.MurmurHash3));})(this,(function(exports,node_util,tinyLru,MurmurHash3){'use strict';function _interopDefaultLegacy(e){return e&&typeof e==='object'&&'default'in e?e:{'default':e}}var MurmurHash3__default=/*#__PURE__*/_interopDefaultLegacy(MurmurHash3);const mmh3 = MurmurHash3__default["default"].x64.hash128;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));
@@ -12,12 +16,12 @@ function keep (arg) {
 }
 
 function parse (arg) {
-	return new URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
+	return new node_util.URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
 }
 
 class ETag {
 	constructor (cacheSize, cacheTTL, seed, mimetype) {
-		this.cache = lru(cacheSize, cacheTTL);
+		this.cache = tinyLru.lru(cacheSize, cacheTTL);
 		this.mimetype = mimetype;
 		this.seed = seed;
 	}
@@ -88,10 +92,10 @@ class ETag {
 	}
 }
 
-export function etag ({cacheSize = 1e3, cacheTTL = 0, seed = null, mimetype = "text/plain"} = {}) {
+function etag ({cacheSize = 1e3, cacheTTL = 0, seed = null, mimetype = "text/plain"} = {}) {
 	const obj = new ETag(cacheSize, cacheTTL, seed !== null ? seed : Math.floor(Math.random() * cacheSize) + 1, mimetype);
 
 	obj.middleware = obj.middleware.bind(obj);
 
 	return obj;
-}
+}exports.etag=etag;Object.defineProperty(exports,'__esModule',{value:true});}));
