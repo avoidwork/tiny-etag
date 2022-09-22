@@ -1,7 +1,7 @@
 import {URL} from "node:url";
 import {lru} from "tiny-lru";
 import MurmurHash3 from "murmurhash3js";
-const mmh3 = MurmurHash3.x64.hash128;
+const mmh3 = MurmurHash3.x86.hash32;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));

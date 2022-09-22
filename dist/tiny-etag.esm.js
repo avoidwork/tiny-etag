@@ -5,7 +5,7 @@
  * @license BSD-3-Clause
  * @version 3.0.0
  */
-import {URL}from'node:url';import {lru}from'tiny-lru';import MurmurHash3 from'murmurhash3js';const mmh3 = MurmurHash3.x64.hash128;
+import {URL}from'node:url';import {lru}from'tiny-lru';import MurmurHash3 from'murmurhash3js';const mmh3 = MurmurHash3.x86.hash32;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));

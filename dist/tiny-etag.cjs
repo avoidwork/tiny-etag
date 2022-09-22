@@ -17,7 +17,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var MurmurHash3__default = /*#__PURE__*/_interopDefaultLegacy(MurmurHash3);
 
-const mmh3 = MurmurHash3__default["default"].x64.hash128;
+const mmh3 = MurmurHash3__default["default"].x86.hash32;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));

@@ -5,7 +5,7 @@
  * @license BSD-3-Clause
  * @version 3.0.0
  */
-(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(exports,require('node:url'),require('tiny-lru'),require('murmurhash3js')):typeof define==='function'&&define.amd?define(['exports','node:url','tiny-lru','murmurhash3js'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.etag={},g.node_url,g.tinyLru,g.MurmurHash3));})(this,(function(exports,node_url,tinyLru,MurmurHash3){'use strict';function _interopDefaultLegacy(e){return e&&typeof e==='object'&&'default'in e?e:{'default':e}}var MurmurHash3__default=/*#__PURE__*/_interopDefaultLegacy(MurmurHash3);const mmh3 = MurmurHash3__default["default"].x64.hash128;
+(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(exports,require('node:url'),require('tiny-lru'),require('murmurhash3js')):typeof define==='function'&&define.amd?define(['exports','node:url','tiny-lru','murmurhash3js'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.etag={},g.node_url,g.tinyLru,g.MurmurHash3));})(this,(function(exports,node_url,tinyLru,MurmurHash3){'use strict';function _interopDefaultLegacy(e){return e&&typeof e==='object'&&'default'in e?e:{'default':e}}var MurmurHash3__default=/*#__PURE__*/_interopDefaultLegacy(MurmurHash3);const mmh3 = MurmurHash3__default["default"].x86.hash32;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));

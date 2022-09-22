@@ -10,12 +10,15 @@
     "sourceType": "module"
   },
   "globals": {
-    "describe": true,
-    "it": true,
-    "after": true,
-    "before": true,
-    "beforeEach": true,
-    "expect": true
+    "describe": "readonly",
+    "it": "readonly",
+    "after": "readonly",
+    "before": "readonly",
+    "beforeEach": "readonly",
+    "expect": "readonly",
+    "node:url": "readonly",
+    "tiny-lru": "readonly",
+    "murmurhash3js": "readonly"
   },
   "rules": {
     "arrow-parens": [2, "as-needed"],

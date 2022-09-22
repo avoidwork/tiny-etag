@@ -2,17 +2,17 @@ import {createServer} from "node:http";
 import tinyhttptest from "tiny-httptest";
 import woodland from "woodland";
 import MurmurHash3 from "murmurhash3js";
-import {etag} from "../src/etag.js";
+import {etag} from "../dist/tiny-etag.esm.js";
 const mmh3 = MurmurHash3.x86.hash32;
 
 const random = Math.floor(Math.random() * 9) + 1,
 	cacheSize = 1000,
-	router = woodland({defaultHeaders: {"Content-Type": "text/plain", "Cache-Control": "public"}, cacheSize: cacheSize}),
+	router = woodland({logging: {enabled: false}, defaultHeaders: {"Content-Type": "text/plain", "Cache-Control": "public"}, cacheSize: cacheSize}),
 	etagStore = etag({cacheSize: cacheSize, seed: random}),
 	msg = "Hello World!",
 	etagStoreValue = `"${mmh3(msg, random)}"`;
 
-router.get(etagStore.middleware).blacklist(etagStore.middleware);
+router.get(etagStore.middleware).ignore(etagStore.middleware);
 router.get("/", (req, res) => res.send(msg, 200, {"etagStore": etagStore.create(msg)}));
 router.get("/no-cache", (req, res) => res.send(msg, 200, {"Cache-Control": "no-cache"}));
 
