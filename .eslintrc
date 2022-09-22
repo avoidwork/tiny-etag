@@ -6,11 +6,19 @@
     "amd": false
   },
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 2020,
+    "sourceType": "module"
   },
   "globals": {
-    "describe": true,
-    "it": true
+    "describe": "readonly",
+    "it": "readonly",
+    "after": "readonly",
+    "before": "readonly",
+    "beforeEach": "readonly",
+    "expect": "readonly",
+    "node:url": "readonly",
+    "tiny-lru": "readonly",
+    "murmurhash3js": "readonly"
   },
   "rules": {
     "arrow-parens": [2, "as-needed"],
@@ -82,7 +90,7 @@
     "no-irregular-whitespace": [2],
     "no-iterator": [2],
     "no-label-var": [2],
-    "no-labels": [0],
+    "no-labels": [2],
     "no-lone-blocks": [2],
     "no-lonely-if": [2],
     "no-loop-func": [2],

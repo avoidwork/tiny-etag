@@ -1,8 +1,7 @@
-"use strict";
-
-const lru = require("tiny-lru"),
-	mmh3 = require("murmurhash3js").x86.hash32,
-	{URL} = require("url");
+import {URL} from "node:url";
+import {lru} from "tiny-lru";
+import MurmurHash3 from "murmurhash3js";
+const mmh3 = MurmurHash3.x86.hash32;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));
@@ -89,4 +88,10 @@ class ETag {
 	}
 }
 
-module.exports = ETag;
+export function etag ({cacheSize = 1e3, cacheTTL = 0, seed = null, mimetype = "text/plain"} = {}) {
+	const obj = new ETag(cacheSize, cacheTTL, seed !== null ? seed : Math.floor(Math.random() * cacheSize) + 1, mimetype);
+
+	obj.middleware = obj.middleware.bind(obj);
+
+	return obj;
+}
