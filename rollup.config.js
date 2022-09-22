@@ -13,7 +13,7 @@ const bannerShort = `/*!
  ${year} ${pkg.author}
  @version ${pkg.version}
 */`;
-const defaultOutBase = {compact: true, banner: bannerLong, name: pkg.name, globals: {"node:url": "node:url", "tiny-lru": "lru", "murmurhash3js": "murmurhash3js"}};
+const defaultOutBase = {compact: true, banner: bannerLong, name: pkg.name};
 const cjOutBase = {...defaultOutBase, compact: false, format: "cjs", exports: "named"};
 const esmOutBase = {...defaultOutBase, format: "esm"};
 const minOutBase = {banner: bannerShort, name: pkg.name, plugins: [terser()], sourcemap: true};
