@@ -1,5 +1,4 @@
 import pkg from "./package.json";
-import { nodeResolve } from "@rollup/plugin-node-resolve";
 
 const {terser} = require("rollup-plugin-terser");
 const year = new Date().getFullYear();
@@ -14,14 +13,22 @@ const bannerShort = `/*!
  ${year} ${pkg.author}
  @version ${pkg.version}
 */`;
-const defaultOutBase = {compact: true, banner: bannerLong, name: pkg.name, plugins: [nodeResolve()]};
-const cjOutBase = {...defaultOutBase, compact: false, format: "cjs", exports: "named"};
+const defaultOutBase = {compact: true, banner: bannerLong, name: pkg.name};
+const cjOutBase = {...defaultOutBase, compact: false, format: "cjs", exports: "named", globals: {
+	"node:url": "node:url",
+	"tiny-lru": "lru",
+	"murmurhash3js": "murmurhash3js"
+}};
 const esmOutBase = {...defaultOutBase, format: "esm"};
 const umdOutBase = {...defaultOutBase, format: "umd"};
-const minOutBase = {banner: bannerShort, name: pkg.name, plugins: [nodeResolve(), terser()], sourcemap: true};
+const minOutBase = {banner: bannerShort, name: pkg.name, plugins: [terser()], sourcemap: true};
 
 export default {
-	external: ["node:url"],
+	external: [
+		"murmurhash3js",
+		"node:url",
+		"tiny-lru"
+	],
 	input: "./src/etag.js",
 	output: [
 		{
