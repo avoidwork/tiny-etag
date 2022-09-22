@@ -9,7 +9,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var node_util = require('node:util');
+var node_url = require('node:url');
 var tinyLru = require('tiny-lru');
 var MurmurHash3 = require('murmurhash3js');
 
@@ -28,7 +28,7 @@ function keep (arg) {
 }
 
 function parse (arg) {
-	return new node_util.URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
+	return new node_url.URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
 }
 
 class ETag {

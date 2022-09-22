@@ -1,4 +1,4 @@
-import {URL} from "node:util";
+import {URL} from "node:url";
 import {lru} from "tiny-lru";
 import MurmurHash3 from "murmurhash3js";
 const mmh3 = MurmurHash3.x64.hash128;

@@ -1,16 +1,14 @@
 import {createServer} from "node:http";
-import path from "node:path";
-import {createRequire} from "module";
+import tinyhttptest from "tiny-httptest";
 import woodland from "woodland";
+import MurmurHash3 from "murmurhash3js";
+import {etag} from "../src/etag.js";
+const mmh3 = MurmurHash3.x86.hash32;
 
-const require = createRequire(import.meta.url),
-	__dirname = require.resolve.paths(".")[0],
-	random = Math.floor(Math.random() * 9) + 1,
-	mmh3 = require("murmurhash3js").x86.hash32,
+const random = Math.floor(Math.random() * 9) + 1,
 	cacheSize = 1000,
 	router = woodland({defaultHeaders: {"Content-Type": "text/plain", "Cache-Control": "public"}, cacheSize: cacheSize}),
-	tinyhttptest = require("tiny-httptest"),
-	etagStore = require(path.join(__dirname, "..", "src", "etag.js"))({cacheSize: cacheSize, seed: random}),
+	etagStore = etag({cacheSize: cacheSize, seed: random}),
 	msg = "Hello World!",
 	etagStoreValue = `"${mmh3(msg, random)}"`;
 
