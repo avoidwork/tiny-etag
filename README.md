@@ -1,7 +1,5 @@
 # tiny-etag
 
-[![build status](https://secure.travis-ci.org/avoidwork/tiny-etag.svg)](http://travis-ci.org/avoidwork/tiny-etag)
-
 ETag middleware
 
 ## Example
