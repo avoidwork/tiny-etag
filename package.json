@@ -3,7 +3,6 @@
   "version": "3.0.0",
   "description": "ETag middleware",
   "source": "src/etag.js",
-  "browser": "dist/etag.js",
   "main": "dist/etag.cjs",
   "module": "dist/etag.esm.js",
   "type": "module",

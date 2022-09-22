@@ -6,15 +6,15 @@ ETag middleware
 
 ## Example
 ```javascript
-"use strict";
+import {http} from "node:http";
+import {woodland} from "woodland";
+import {etag} from "tiny-etag";
+const max = 1000;
+const seed = Math.floor(Math.random() * max) + 1;
+const router = woodland({cacheSize: max, defaultHeaders: {"Cache-Control": "no-cache"}, seed: seed});
+const etags = etag({cacheSize: max, seed: seed});
 
-const http = require("http"),
-	max = 1000,
-	seed = Math.floor(Math.random() * max) + 1,
-	router = require("woodland")({cacheSize: max, defaultHeaders: {"Cache-Control": "no-cache"}, seed: seed}),
-	etag = require("tiny-etag")({cacheSize: max, seed: seed});
-
-router.use(etag.middleware).blacklist(etag.middleware);
+router.use(etag.middleware).ignore(etag.middleware);
 
 router.use("/", (req, res) => {
 	const body = "Hello World!";
