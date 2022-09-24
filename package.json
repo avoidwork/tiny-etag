@@ -1,10 +1,10 @@
 {
   "name": "tiny-etag",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "ETag middleware",
   "source": "src/etag.js",
-  "main": "dist/etag.cjs",
-  "module": "dist/etag.esm.js",
+  "main": "dist/tiny-etag.cjs",
+  "module": "dist/tiny-etag.esm.js",
   "type": "module",
   "sourceType": "module",
   "types": "etag.d.ts",
