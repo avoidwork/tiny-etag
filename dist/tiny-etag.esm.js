@@ -3,7 +3,7 @@
  *
  * @copyright 2022 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 3.0.1
+ * @version 3.0.2
  */
 import {URL}from'node:url';import {lru}from'tiny-lru';import MurmurHash3 from'murmurhash3js';const mmh3 = MurmurHash3.x86.hash32;
 

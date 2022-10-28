@@ -1,6 +1,6 @@
 import {createServer} from "node:http";
-import tinyhttptest from "tiny-httptest";
-import woodland from "woodland";
+import {httptest} from "tiny-httptest";
+import {woodland} from "woodland";
 import MurmurHash3 from "murmurhash3js";
 import {etag} from "../dist/tiny-etag.esm.js";
 const mmh3 = MurmurHash3.x86.hash32;
@@ -20,7 +20,7 @@ const server = createServer(router.route).listen(8001);
 
 describe("Valid etagStore", function () {
 	it("GET / (200 / 'Success')", function () {
-		return tinyhttptest({url: "http://localhost:8001/"})
+		return httptest({url: "http://localhost:8001/"})
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "public")
@@ -31,7 +31,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("HEAD / (200 / 'Success')", function () {
-		return tinyhttptest({url: "http://localhost:8001/", method: "head"})
+		return httptest({url: "http://localhost:8001/", method: "head"})
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "public")
@@ -42,7 +42,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET / (200 / 'Success' / JSON)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers: {accept: "application/json"}})
+		return httptest({url: "http://localhost:8001/", headers: {accept: "application/json"}})
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "public")
@@ -53,7 +53,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET / (304 / empty)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagStoreValue}})
+		return httptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagStoreValue}})
 			.expectStatus(304)
 			.expectHeader("age", /\d+/)
 			.expectHeader("content-length", void 0)
@@ -64,7 +64,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET / (304 / empty & validation)", function () {
-		return tinyhttptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagStoreValue}})
+		return httptest({url: "http://localhost:8001/", headers: {"If-None-Match": etagStoreValue}})
 			.expectStatus(304)
 			.expectHeader("age", /\d+/)
 			.expectHeader("content-length", void 0)
@@ -75,7 +75,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET / (200 / 'Success' / No etagStore)", function () {
-		return tinyhttptest({url: "http://localhost:8001/"})
+		return httptest({url: "http://localhost:8001/"})
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "public")
@@ -86,7 +86,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET /no-cache (200 / 'Success' / No etagStore)", function () {
-		return tinyhttptest({url: "http://localhost:8001/no-cache"})
+		return httptest({url: "http://localhost:8001/no-cache"})
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "no-cache")
@@ -97,7 +97,7 @@ describe("Valid etagStore", function () {
 	});
 
 	it("HEAD /no-cache (200 / 'Success' / No etagStore)", function () {
-		return tinyhttptest({url: "http://localhost:8001/no-cache", method: "head"})
+		return httptest({url: "http://localhost:8001/no-cache", method: "head"})
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "no-cache")
