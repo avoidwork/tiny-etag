@@ -1,9 +1,9 @@
 /**
  * tiny-etag
  *
- * @copyright 2022 Jason Mulligan <jason.mulligan@avoidwork.com>
+ * @copyright 2023 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 3.0.2
+ * @version 3.0.3
  */
 import {URL}from'node:url';import {lru}from'tiny-lru';import MurmurHash3 from'murmurhash3js';const mmh3 = MurmurHash3.x86.hash32;
 

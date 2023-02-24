@@ -12,12 +12,12 @@ const seed = Math.floor(Math.random() * max) + 1;
 const router = woodland({cacheSize: max, defaultHeaders: {"Cache-Control": "no-cache"}, seed: seed});
 const etags = etag({cacheSize: max, seed: seed});
 
-router.use(etag.middleware).ignore(etag.middleware);
+router.use(etags.middleware).ignore(etags.middleware);
 
 router.use("/", (req, res) => {
 	const body = "Hello World!";
 
-	res.writeHead(200, {"Content-Type": "text/plain", "ETag": etag.create(body)});
+	res.writeHead(200, {"Content-Type": "text/plain", "ETag": etags.create(body)});
 	res.end(body);
 });
 
@@ -45,5 +45,5 @@ Adds `url` to the `cache`
 Removes `url` from the `cache`
 
 ## License
-Copyright (c) 2022 Jason Mulligan
+Copyright (c) 2023 Jason Mulligan
 Licensed under the BSD-3 license
