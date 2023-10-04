@@ -3,21 +3,15 @@
  *
  * @copyright 2023 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 3.0.3
+ * @version 4.0.0
  */
 'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
 
 var node_url = require('node:url');
 var tinyLru = require('tiny-lru');
 var MurmurHash3 = require('murmurhash3js');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var MurmurHash3__default = /*#__PURE__*/_interopDefaultLegacy(MurmurHash3);
-
-const mmh3 = MurmurHash3__default["default"].x86.hash32;
+const mmh3 = MurmurHash3.x86.hash32;
 
 function clone (arg) {
 	return JSON.parse(JSON.stringify(arg, null, 0));

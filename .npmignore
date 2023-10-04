@@ -1,4 +1,7 @@
 .idea
+.github
+.husky
+.nyc_output
 src
 test
 .eslintrc

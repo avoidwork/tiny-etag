@@ -2,7 +2,7 @@ import {createServer} from "node:http";
 import {httptest} from "tiny-httptest";
 import {woodland} from "woodland";
 import MurmurHash3 from "murmurhash3js";
-import {etag} from "../dist/tiny-etag.esm.js";
+import {etag} from "../dist/tiny-etag.cjs";
 const mmh3 = MurmurHash3.x86.hash32;
 
 const random = Math.floor(Math.random() * 9) + 1,
