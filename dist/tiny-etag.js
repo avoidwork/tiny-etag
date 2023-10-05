@@ -107,7 +107,7 @@ function parse (arg) {
 	valid (headers) {
 		const header = headers[CACHE_CONTROL] || EMPTY;
 
-		return (header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false) || header.length === INT_0; // eslint-disable-line no-extra-parens
+		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false;
 	}
 }
 
