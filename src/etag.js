@@ -11,6 +11,7 @@ import {
 	INT_200,
 	INT_304,
 	INT_DETAULT_CACHE,
+	PRIVATE,
 	NO_CACHE,
 	NO_STORE,
 	RANGE,
@@ -87,7 +88,7 @@ export class ETag {
 	valid (headers) {
 		const header = headers[CACHE_CONTROL] || EMPTY;
 
-		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false;
+		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false && header.includes(PRIVATE) === false;
 	}
 }
 

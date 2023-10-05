@@ -21,5 +21,6 @@ export const IF_NONE_MATCH = "if-none-match";
 export const EMPTY = "";
 export const NO_CACHE = "no-cache";
 export const NO_STORE = "no-store";
+export const PRIVATE = "private";
 export const PUBLIC = "public";
 export const CONTENT_TYPE = "content-type";

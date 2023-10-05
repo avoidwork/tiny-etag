@@ -27,7 +27,8 @@ const RANGE = "range";
 const IF_NONE_MATCH = "if-none-match";
 const EMPTY = "";
 const NO_CACHE = "no-cache";
-const NO_STORE = "no-store";const clone = typeof structuredClone === "function" ? structuredClone : arg => JSON.parse(JSON.stringify(arg));
+const NO_STORE = "no-store";
+const PRIVATE = "private";const clone = typeof structuredClone === "function" ? structuredClone : arg => JSON.parse(JSON.stringify(arg));
 
 function hash (arg = "") {
 	return createHash(SHA1).update(arg).digest(BASE64);
@@ -107,7 +108,7 @@ function parse (arg) {
 	valid (headers) {
 		const header = headers[CACHE_CONTROL] || EMPTY;
 
-		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false;
+		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false && header.includes(PRIVATE) === false;
 	}
 }
 
