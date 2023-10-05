@@ -14,7 +14,7 @@ router.use(etags.middleware);
 router.get("/", (req, res) => {
     const body = "Hello World!";
 
-    res.writeHead(200, {"Content-Type": "text/plain", "ETag": etags.create(body)});
+    res.writeHead(200, {"content-type": "text/plain", "etag": etags.create(body)});
     res.end(body);
 });
 ```
