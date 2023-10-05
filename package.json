@@ -57,7 +57,7 @@
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "rollup": "^3.29.2",
-    "tiny-httptest": "^4.0.4",
+    "tiny-httptest": "^4.0.5",
     "typescript": "^5.2.2",
     "woodland": "^17.0.2"
   }

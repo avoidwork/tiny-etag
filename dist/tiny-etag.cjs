@@ -7,60 +7,86 @@
  */
 'use strict';
 
-var node_url = require('node:url');
 var tinyLru = require('tiny-lru');
-var MurmurHash3 = require('murmurhash3js');
+var node_crypto = require('node:crypto');
 
-const mmh3 = MurmurHash3.x86.hash32;
+const BASE64 = "base64";
+const SHA1 = "sha1";
+const CACHE_CONTROL = "cache-control";
+const CONTENT_LOCATION = "content-location";
+const DATE = "date";
+const ETAG = "etag";
+const EXPIRES = "expires";
+const VARY = "vary";
+const TEXT_PLAIN = "text/plain";
 
-function clone (arg) {
-	return JSON.parse(JSON.stringify(arg, null, 0));
+const INT_DETAULT_CACHE = 1e3;
+const INT_0 = 0;
+const INT_200 = 200;
+const INT_304 = 304;
+const INT_1000 = 1000;
+
+const GET = "GET";
+const FINISH = "finish";
+const RANGE = "range";
+const IF_NONE_MATCH = "if-none-match";
+const EMPTY = "";
+const NO_CACHE = "no-cache";
+const NO_STORE = "no-store";
+
+const clone = typeof structuredClone === "function" ? structuredClone : arg => JSON.parse(JSON.stringify(arg));
+
+function hash (arg = "") {
+	return node_crypto.createHash(SHA1).update(arg).digest(BASE64);
 }
 
 function keep (arg) {
-	return arg === "cache-control" || arg === "content-location" || arg === "date" || arg === "etag" || arg === "expires" || arg === "vary";
+	return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
 }
 
 function parse (arg) {
-	return new node_url.URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
+	return new URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
 }
 
 class ETag {
-	constructor (cacheSize, cacheTTL, seed, mimetype) {
+	constructor (cacheSize, cacheTTL, mimetype) {
 		this.cache = tinyLru.lru(cacheSize, cacheTTL);
 		this.mimetype = mimetype;
-		this.seed = seed;
 	}
 
-	create (arg) {
-		return `"${mmh3(arg, this.seed)}"`;
+	create (arg = EMPTY, mimetype = this.mimetype) {
+		return `"${this.hash(arg, mimetype)}"`;
+	}
+
+	hash (arg = EMPTY, mimetype = this.mimetype) {
+		return hash(`${arg}_${mimetype}`);
 	}
 
 	middleware (req, res, next) {
-		if (req.method === "GET") {
-			const uri = (req.parsed || parse(req)).href,
+		if (req.method === GET) {
+			const uri = (req.parsed || this.parse(req)).href,
 				key = this.hash(uri, req.headers.accept),
 				cached = this.cache.get(key);
 
-			res.on("finish", () => {
+			res.on(FINISH, () => {
 				const headers = res.getHeaders(),
 					status = res.statusCode;
 
-				if ((status === 200 || status === 304) && "etag" in headers && this.valid(headers)) {
+				if ((status === INT_200 || status === INT_304) && ETAG in headers && this.valid(headers)) {
 					this.register(key, {
 						etag: headers.etag,
 						headers: headers,
-						timestamp: cached ? cached.timestamp : Math.floor(new Date().getTime() / 1000)
+						timestamp: cached ? cached.timestamp : Math.floor(Date.now() / INT_1000)
 					});
 				}
 			});
 
-			if (cached !== void 0 && "etag" in cached && "range" in req.headers === false && req.headers["if-none-match"] === cached.etag) {
+			if (cached !== void 0 && ETAG in cached && RANGE in req.headers === false && req.headers[IF_NONE_MATCH] === cached.etag) {
 				const headers = clone(cached.headers);
 
-				headers.age = Math.floor(new Date().getTime() / 1000) - cached.timestamp;
-				res.removeHeader("cache-control");
-				res.send("", 304, headers);
+				headers.age = Math.floor(Date.now() / INT_1000) - cached.timestamp;
+				res.removeHeader(CACHE_CONTROL);
+				res.send(EMPTY, INT_304, headers);
 			} else {
 				next();
 			}
@@ -69,8 +95,8 @@ class ETag {
 		}
 	}
 
-	hash (arg = "", mimetype = "") {
-		return this.create(`${arg}_${mimetype || this.mimetype}`);
+	parse (arg) {
+		return parse(arg);
 	}
 
 	register (key, arg) {
@@ -87,23 +113,20 @@ class ETag {
 		return this;
 	}
 
-	unregister (key) {
-		this.cache.delete(key);
-	}
-
 	valid (headers) {
-		const header = headers["cache-control"] || "";
+		const header = headers[CACHE_CONTROL] || EMPTY;
 
-		return header.length === 0 || (header.includes("no-cache") === false && header.includes("no-store") === false); // eslint-disable-line no-extra-parens
+		return (header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false) || header.length === INT_0; // eslint-disable-line no-extra-parens
 	}
 }
 
-function etag ({cacheSize = 1e3, cacheTTL = 0, seed = null, mimetype = "text/plain"} = {}) {
-	const obj = new ETag(cacheSize, cacheTTL, seed !== null ? seed : Math.floor(Math.random() * cacheSize) + 1, mimetype);
+function etag ({cacheSize = INT_DETAULT_CACHE, cacheTTL = INT_0, mimetype = TEXT_PLAIN} = {}) {
+	const obj = new ETag(cacheSize, cacheTTL, mimetype);
 
 	obj.middleware = obj.middleware.bind(obj);
 
 	return obj;
 }
 
+exports.ETag = ETag;
 exports.etag = etag;
