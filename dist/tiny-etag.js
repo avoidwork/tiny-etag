@@ -14,13 +14,11 @@ const ETAG = "etag";
 const EXPIRES = "expires";
 const VARY = "vary";
 const TEXT_PLAIN = "text/plain";
-
 const INT_DETAULT_CACHE = 1e3;
 const INT_0 = 0;
 const INT_200 = 200;
 const INT_304 = 304;
 const INT_1000 = 1000;
-
 const GET = "GET";
 const FINISH = "finish";
 const RANGE = "range";
