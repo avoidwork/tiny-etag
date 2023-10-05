@@ -6,7 +6,7 @@ import {etag} from "../dist/tiny-etag.cjs";
 import {CONTENT_TYPE, CACHE_CONTROL, INT_1000, INT_200, NO_CACHE, TEXT_PLAIN, PUBLIC} from "../src/constants.js";
 
 const cacheSize = INT_1000,
-	router = woodland({logging: {enabled: false}, defaultHeaders: {[CONTENT_TYPE]: TEXT_PLAIN, [CACHE_CONTROL]: PUBLIC}, cacheSize: cacheSize}),
+	router = woodland({etags: false, logging: {enabled: false}, defaultHeaders: {[CONTENT_TYPE]: TEXT_PLAIN, [CACHE_CONTROL]: PUBLIC}, cacheSize: cacheSize}),
 	etagStore = etag({cacheSize: cacheSize}),
 	msg = "Hello World!",
 	etagStoreValue = etagStore.create(msg);
@@ -46,6 +46,7 @@ describe("Valid etagStore", function () {
 
 	it("GET / (200 / 'Success' / JSON)", function () {
 		return httptest({url: "http://localhost:8001/"})
+			.etags()
 			.expectStatus(200)
 			.expectHeader("allow", "GET, HEAD, OPTIONS")
 			.expectHeader("cache-control", "public")
@@ -56,8 +57,8 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET / (304 / empty)", function () {
-		return httptest({url: "http://localhost:8001/", headers: {"if-none-match": etagStoreValue}})
-			.expectStatus(304)
+		return httptest({url: "http://localhost:8001/"})
+			.etags()
 			.expectHeader("age", /\d+/)
 			.expectHeader("content-length", void 0)
 			.expectHeader("etag", etagStoreValue)
@@ -67,7 +68,8 @@ describe("Valid etagStore", function () {
 	});
 
 	it("GET / (304 / empty & validation)", function () {
-		return httptest({url: "http://localhost:8001/", headers: {"if-none-match": etagStoreValue}})
+		return httptest({url: "http://localhost:8001/"})
+			.etags()
 			.expectStatus(304)
 			.expectHeader("age", /\d+/)
 			.expectHeader("content-length", void 0)

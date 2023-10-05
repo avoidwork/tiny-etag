@@ -34,20 +34,7 @@ const EMPTY = "";
 const NO_CACHE = "no-cache";
 const NO_STORE = "no-store";
 const PRIVATE = "private";
-
-const clone = typeof structuredClone === "function" ? structuredClone : arg => JSON.parse(JSON.stringify(arg));
-
-function hash (arg = "") {
-	return node_crypto.createHash(SHA1).update(arg).digest(BASE64);
-}
-
-function keep (arg) {
-	return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
-}
-
-function parse (arg) {
-	return new URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
-}
+const MAX_AGE_0 = "max-age=0";
 
 class ETag {
 	constructor (cacheSize, cacheTTL, mimetype) {
@@ -59,8 +46,12 @@ class ETag {
 		return `"${this.hash(arg, mimetype)}"`;
 	}
 
-	hash (arg = EMPTY, mimetype = this.mimetype) {
-		return hash(`${arg}_${mimetype}`);
+	hash (arg = "") {
+		return node_crypto.createHash(SHA1).update(arg).digest(BASE64);
+	}
+
+	keep (arg) {
+		return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
 	}
 
 	middleware (req, res, next) {
@@ -83,7 +74,7 @@ class ETag {
 			});
 
 			if (cached !== void 0 && ETAG in cached && RANGE in req.headers === false && req.headers[IF_NONE_MATCH] === cached.etag) {
-				const headers = clone(cached.headers);
+				const headers = structuredClone(cached.headers);
 
 				headers.age = Math.floor(Date.now() / INT_1000) - cached.timestamp;
 				res.removeHeader(CACHE_CONTROL);
@@ -97,13 +88,13 @@ class ETag {
 	}
 
 	parse (arg) {
-		return parse(arg);
+		return new URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
 	}
 
 	register (key, arg) {
-		const state = clone(arg);
+		const state = structuredClone(arg);
 
-		state.headers = Object.keys(state.headers).filter(i => keep(i.toLowerCase())).reduce((a, v) => {
+		state.headers = Object.keys(state.headers).filter(i => this.keep(i.toLowerCase())).reduce((a, v) => {
 			a[v] = state.headers[v];
 
 			return a;
@@ -117,7 +108,7 @@ class ETag {
 	valid (headers) {
 		const header = headers[CACHE_CONTROL] || EMPTY;
 
-		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false && header.includes(PRIVATE) === false;
+		return header.length === INT_0 || header.includes(NO_CACHE) === false && header.includes(NO_STORE) === false && header.includes(PRIVATE) === false && header.includes(MAX_AGE_0) === false;
 	}
 }
 

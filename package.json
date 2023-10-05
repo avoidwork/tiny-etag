@@ -1,7 +1,7 @@
 {
   "name": "tiny-etag",
   "version": "4.0.0",
-  "description": "ETag middleware",
+  "description": "ETag middleware for express.js API compatible routers",
   "type": "module",
   "types": "types/etag.d.ts",
   "source": "src/etag.js",
@@ -44,7 +44,7 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": ">=8.4.0"
+    "node": ">=17.0.0"
   },
   "homepage": "http://avoidwork.github.io/tiny-etag/",
   "dependencies": {
