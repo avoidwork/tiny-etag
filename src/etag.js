@@ -1,9 +1,13 @@
 import {lru} from "tiny-lru";
 import {createHash} from "node:crypto";
 import {
+	BASE64,
 	CACHE_CONTROL,
+	CONTENT_LOCATION,
+	DATE,
 	EMPTY,
 	ETAG,
+	EXPIRES,
 	FINISH,
 	GET,
 	IF_NONE_MATCH,
@@ -12,11 +16,15 @@ import {
 	INT_200,
 	INT_304,
 	INT_DETAULT_CACHE,
-	PRIVATE,
+	MAX_AGE_0,
 	NO_CACHE,
 	NO_STORE,
+	PRIVATE,
 	RANGE,
-	TEXT_PLAIN, SHA1, BASE64, CONTENT_LOCATION, DATE, EXPIRES, VARY, MAX_AGE_0
+	SHA1,
+	STRING,
+	TEXT_PLAIN,
+	VARY
 } from "./constants.js";
 
 export class ETag {
@@ -29,8 +37,10 @@ export class ETag {
 		return `"${this.hash(arg, mimetype)}"`;
 	}
 
-	hash (arg = "") {
-		return createHash(SHA1).update(arg).digest(BASE64);
+	hash (arg = EMPTY, mimetype = this.mimetype) {
+		const input = `${typeof arg === STRING ? arg : JSON.stringify(arg)}_${mimetype}`;
+
+		return createHash(SHA1).update(input).digest(BASE64);
 	}
 
 	keep (arg) {
@@ -71,7 +81,7 @@ export class ETag {
 	}
 
 	parse (arg) {
-		return new URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
+		return new URL(typeof arg === STRING ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
 	}
 
 	register (key, arg) {

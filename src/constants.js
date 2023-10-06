@@ -23,3 +23,4 @@ export const PRIVATE = "private";
 export const PUBLIC = "public";
 export const CONTENT_TYPE = "content-type";
 export const MAX_AGE_0 = "max-age=0";
+export const STRING = "string";

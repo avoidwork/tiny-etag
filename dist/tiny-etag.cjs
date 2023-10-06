@@ -3,7 +3,7 @@
  *
  * @copyright 2023 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 4.0.0
+ * @version 4.0.1
  */
 'use strict';
 
@@ -33,6 +33,7 @@ const NO_CACHE = "no-cache";
 const NO_STORE = "no-store";
 const PRIVATE = "private";
 const MAX_AGE_0 = "max-age=0";
+const STRING = "string";
 
 class ETag {
 	constructor (cacheSize, cacheTTL, mimetype) {
@@ -44,8 +45,10 @@ class ETag {
 		return `"${this.hash(arg, mimetype)}"`;
 	}
 
-	hash (arg = "") {
-		return node_crypto.createHash(SHA1).update(arg).digest(BASE64);
+	hash (arg = EMPTY, mimetype = this.mimetype) {
+		const input = `${typeof arg === STRING ? arg : JSON.stringify(arg)}_${mimetype}`;
+
+		return node_crypto.createHash(SHA1).update(input).digest(BASE64);
 	}
 
 	keep (arg) {
@@ -86,7 +89,7 @@ class ETag {
 	}
 
 	parse (arg) {
-		return new URL(typeof arg === "string" ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
+		return new URL(typeof arg === STRING ? arg : `http://${arg.headers.host || `localhost:${arg.socket.server._connectionKey.replace(/.*::/, "")}`}${arg.url}`);
 	}
 
 	register (key, arg) {

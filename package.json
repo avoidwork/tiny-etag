@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "ETag middleware for express.js API compatible routers",
   "type": "module",
   "types": "types/etag.d.ts",

@@ -37,10 +37,10 @@ All files      |     100 |    78.57 |     100 |     100 |
 ### etag({cacheSize: 1000, cacheTTL: 0, seed: random, mimetype: "text/plain"})
 Returns an tiny-etag instance. Cache TTL concerns do not spread with a notification.
 
-### create(arg)
-Creates a strong ETag value from `arg`; a composite `String` is recommended
+### create(arg = ""[, mimetype = "text/plain"])
+Creates a strong ETag value from `arg`; a composite `String` is recommended. It's ideal to 
 
-### hash(arg[, mimetype="text/plain"])
+### hash(arg = ""[, mimetype="text/plain"])
 Creates a hash of `arg`, uses `create()`
 
 ### keep(arg)

@@ -3,10 +3,15 @@ import assert from "node:assert/strict";
 import {httptest} from "tiny-httptest";
 import {woodland} from "woodland";
 import {etag} from "../dist/tiny-etag.cjs";
-import {CONTENT_TYPE, CACHE_CONTROL, INT_1000, INT_200, NO_CACHE, TEXT_PLAIN, PUBLIC} from "../src/constants.js";
+import {CACHE_CONTROL, CONTENT_TYPE, INT_1000, INT_200, NO_CACHE, PUBLIC, TEXT_PLAIN} from "../src/constants.js";
 
 const cacheSize = INT_1000,
-	router = woodland({etags: false, logging: {enabled: false}, defaultHeaders: {[CONTENT_TYPE]: TEXT_PLAIN, [CACHE_CONTROL]: PUBLIC}, cacheSize: cacheSize}),
+	router = woodland({
+		etags: false,
+		logging: {enabled: false},
+		defaultHeaders: {[CONTENT_TYPE]: TEXT_PLAIN, [CACHE_CONTROL]: PUBLIC},
+		cacheSize: cacheSize
+	}),
 	etagStore = etag({cacheSize: cacheSize}),
 	msg = "Hello World!",
 	etagStoreValue = etagStore.create(msg);
