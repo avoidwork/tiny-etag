@@ -1,11 +1,11 @@
 {
   "name": "tiny-etag",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "ETag middleware for express.js API compatible routers",
   "type": "module",
   "types": "types/etag.d.ts",
   "source": "src/etag.js",
-  "main": "dist/tiny-etag",
+  "main": "dist/tiny-etag.cjs",
   "exports": {
     "types": "./types/etag.d.ts",
     "import": "./dist/tiny-etag.js",
@@ -57,7 +57,7 @@
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "rollup": "^4.0.0",
-    "tiny-httptest": "^4.0.5",
+    "tiny-httptest": "^4.0.6",
     "typescript": "^5.2.2",
     "woodland": "^18.0.6"
   }

@@ -3,7 +3,7 @@
  *
  * @copyright 2023 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 4.0.1
+ * @version 4.0.2
  */
 import {lru}from'tiny-lru';import {createHash}from'node:crypto';const BASE64 = "base64";
 const SHA1 = "sha1";
