@@ -1,5 +1,6 @@
 import {lru} from "tiny-lru";
 import {createHash} from "node:crypto";
+import {STATUS_CODES} from "node:http";
 import {
 	BASE64,
 	CACHE_CONTROL,
@@ -71,7 +72,9 @@ export class ETag {
 
 				headers.age = Math.floor(Date.now() / INT_1000) - cached.timestamp;
 				res.removeHeader(CACHE_CONTROL);
-				res.send(EMPTY, INT_304, headers);
+				res.statusCode = INT_304;
+				res.writeHead(res.statusCode, STATUS_CODES[res.statusCode], headers);
+				res.end();
 			} else {
 				next();
 			}
