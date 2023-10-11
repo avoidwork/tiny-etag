@@ -5,7 +5,7 @@
  * @license BSD-3-Clause
  * @version 4.0.4
  */
-import {lru}from'tiny-lru';import {createHash}from'node:crypto';import {STATUS_CODES}from'node:http';const BASE64 = "base64";
+import {lru}from'tiny-lru';import {createHash}from'node:crypto';const BASE64 = "base64";
 const SHA1 = "sha1";
 const CACHE_CONTROL = "cache-control";
 const CONTENT_LOCATION = "content-location";
@@ -73,9 +73,7 @@ const STRING = "string";class ETag {
 
 				headers.age = Math.floor(Date.now() / INT_1000) - cached.timestamp;
 				res.removeHeader(CACHE_CONTROL);
-				res.statusCode = INT_304;
-				res.writeHead(res.statusCode, STATUS_CODES[res.statusCode], headers);
-				res.end();
+				res.send(EMPTY, INT_304, headers);
 			} else {
 				next();
 			}

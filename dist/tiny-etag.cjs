@@ -9,7 +9,6 @@
 
 var tinyLru = require('tiny-lru');
 var node_crypto = require('node:crypto');
-var node_http = require('node:http');
 
 const BASE64 = "base64";
 const SHA1 = "sha1";
@@ -81,9 +80,7 @@ class ETag {
 
 				headers.age = Math.floor(Date.now() / INT_1000) - cached.timestamp;
 				res.removeHeader(CACHE_CONTROL);
-				res.statusCode = INT_304;
-				res.writeHead(res.statusCode, node_http.STATUS_CODES[res.statusCode], headers);
-				res.end();
+				res.send(EMPTY, INT_304, headers);
 			} else {
 				next();
 			}
