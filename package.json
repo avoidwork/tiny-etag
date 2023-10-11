@@ -1,6 +1,6 @@
 {
   "name": "tiny-etag",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "ETag middleware for express.js API compatible routers",
   "type": "module",
   "types": "types/etag.d.ts",
@@ -59,6 +59,6 @@
     "rollup": "^4.0.0",
     "tiny-httptest": "^4.0.6",
     "typescript": "^5.2.2",
-    "woodland": "^18.0.6"
+    "woodland": "^18.1.0"
   }
 }

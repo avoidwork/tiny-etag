@@ -72,7 +72,9 @@ export class ETag {
 
 				headers.age = Math.floor(Date.now() / INT_1000) - cached.timestamp;
 				res.removeHeader(CACHE_CONTROL);
-				res.send(EMPTY, INT_304, headers);
+				res.status(INT_304);
+				res.set(headers);
+				res.send(EMPTY);
 			} else {
 				next();
 			}
