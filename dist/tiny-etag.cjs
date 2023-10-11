@@ -3,7 +3,7 @@
  *
  * @copyright 2023 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 4.0.3
+ * @version 4.0.4
  */
 'use strict';
 
@@ -33,6 +33,7 @@ const EMPTY = "";
 const NO_CACHE = "no-cache";
 const NO_STORE = "no-store";
 const PRIVATE = "private";
+const CONTENT_TYPE = "content-type";
 const MAX_AGE_0 = "max-age=0";
 const STRING = "string";
 
@@ -53,7 +54,7 @@ class ETag {
 	}
 
 	keep (arg) {
-		return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
+		return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === CONTENT_TYPE || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
 	}
 
 	middleware (req, res, next) {

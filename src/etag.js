@@ -5,6 +5,7 @@ import {
 	BASE64,
 	CACHE_CONTROL,
 	CONTENT_LOCATION,
+	CONTENT_TYPE,
 	DATE,
 	EMPTY,
 	ETAG,
@@ -45,7 +46,7 @@ export class ETag {
 	}
 
 	keep (arg) {
-		return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
+		return arg === CACHE_CONTROL || arg === CONTENT_LOCATION || arg === CONTENT_TYPE || arg === DATE || arg === ETAG || arg === EXPIRES || arg === VARY;
 	}
 
 	middleware (req, res, next) {
