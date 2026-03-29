@@ -52,13 +52,11 @@
   },
   "devDependencies": {
     "auto-changelog": "^2.4.0",
-    "eslint": "^8.49.0",
     "husky": "^9.0.2",
-    "mocha": "^11.0.1",
-    "nyc": "^18.0.0",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
     "rollup": "^4.0.0",
     "tiny-httptest": "^4.0.6",
-    "typescript": "^6.0.2",
-    "woodland": "^21.0.7"
+    "woodland": "^22.0.3"
   }
 }
