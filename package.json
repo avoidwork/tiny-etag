@@ -48,7 +48,7 @@
   },
   "homepage": "http://avoidwork.github.io/tiny-etag/",
   "dependencies": {
-    "tiny-lru": "^11.2.2"
+    "tiny-lru": "^13.0.0"
   },
   "devDependencies": {
     "auto-changelog": "^2.4.0",
